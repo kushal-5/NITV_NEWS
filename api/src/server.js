@@ -10,7 +10,6 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Improved CORS Configuration
 const corsOptions = {
   origin: ['http://localhost:4200', 'http://127.0.0.1:4200'], // Angular default port
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -24,14 +23,13 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
-// Debug logger: prints method, url, origin, headers and body (remove or restrict in production)
+// Debug
 app.use((req, res, next) => {
   console.log('--- Incoming Request ---');
   console.log('Method:', req.method);
   console.log('URL:', req.originalUrl);
   console.log('Origin:', req.headers.origin);
   console.log('Headers:', JSON.stringify(req.headers));
-  // Body may be large; only print when present
   if (req.body && Object.keys(req.body).length) console.log('Body:', JSON.stringify(req.body));
   console.log('------------------------');
   next();
@@ -57,7 +55,6 @@ app.post('/test', (req, res) => {
 app.use('/api/auth', authRoutes);
 
 // Catch-all 404 handler for any unmatched route
-// Use app.use without a path so Express won't parse a '*' pattern with path-to-regexp
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
